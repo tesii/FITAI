@@ -31,7 +31,7 @@ form.addEventListener('submit', async (e) => {
 
     // 2️⃣ Sign up user in Supabase Auth
     const { data: authData, error: authError } =
-      await supabase.auth.signUp({
+      await supabaseClient.auth.signUp({
         email,
         password,
       });
@@ -51,8 +51,8 @@ form.addEventListener('submit', async (e) => {
 
     console.log("Auth user created:", user.id);
 
-    // 3️⃣ Insert profile into users table (IMPORTANT FIX)
-    const { error: insertError } = await supabase
+    // 3️⃣ Insert profile into users table
+    const { error: insertError } = await supabaseClient
       .from('users')
       .insert([
         {
@@ -71,7 +71,6 @@ form.addEventListener('submit', async (e) => {
 
     // 4️⃣ SUCCESS
     showMessage("Account created successfully!", "success");
-
     form.reset();
 
     setTimeout(() => {
