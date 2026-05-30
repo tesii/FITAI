@@ -1,7 +1,8 @@
-const supabase = window.supabase.createClient(
+const supabaseClient = window.supabase.createClient(
   "https://ojzeaqememaevlxcyabn.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9qemVhcWVtZW1hZXZseGN5YWJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3NTQxODIsImV4cCI6MjA4OTMzMDE4Mn0.4Dg17eTLAK0AlHXmrCCvxEIa2RngJIu0kr1v5rX439Y"
 );
+
 const form = document.getElementById('login-form');
 const message = document.getElementById('message');
 
@@ -24,12 +25,12 @@ form.addEventListener('submit', async (e) => {
   try {
     showMessage('Logging in...', 'info');
 
-    // 1️⃣ ALWAYS CLEAR OLD SESSION FIRST (fix refresh token error)
-    await supabase.auth.signOut();
+    // 1️⃣ ALWAYS CLEAR OLD SESSION FIRST
+    await supabaseClient.auth.signOut();
 
     // 2️⃣ LOGIN
     const { data: authData, error: authError } =
-      await supabase.auth.signInWithPassword({
+      await supabaseClient.auth.signInWithPassword({
         email,
         password,
       });
@@ -49,8 +50,8 @@ form.addEventListener('submit', async (e) => {
 
     console.log('Logged in user:', user.id);
 
-    // 3️⃣ FORCE SESSION REFRESH (IMPORTANT FIX FOR YOUR ERROR)
-    const { data: sessionData } = await supabase.auth.getSession();
+    // 3️⃣ FORCE SESSION REFRESH
+    const { data: sessionData } = await supabaseClient.auth.getSession();
 
     if (!sessionData.session) {
       showMessage('Session not available', 'error');
@@ -58,7 +59,7 @@ form.addEventListener('submit', async (e) => {
     }
 
     // 4️⃣ FETCH ROLE FROM USERS TABLE
-    const { data: profile, error: profileError } = await supabase
+    const { data: profile, error: profileError } = await supabaseClient
       .from('users')
       .select('role')
       .eq('auth_user_id', user.id)
@@ -77,7 +78,7 @@ form.addEventListener('submit', async (e) => {
 
     console.log('User role:', profile.role);
 
-    // 5️⃣ SUCCESS
+    // 5️⃣ SUCCESS — REDIRECT BASED ON ROLE
     showMessage('Login successful! Redirecting...', 'success');
 
     setTimeout(() => {
