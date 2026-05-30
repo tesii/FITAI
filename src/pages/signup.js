@@ -1,5 +1,7 @@
-import { supabase } from '../lib/supabaseClient.js';
-
+const supabase = window.supabase.createClient(
+  "supabaseUrl",
+  "supabaseAnonKey"
+);
 const form = document.getElementById('signupForm');
 const message = document.getElementById('message');
 
