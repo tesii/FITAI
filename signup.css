@@ -117,7 +117,7 @@ html, body {
 /* RIGHT SIDE: BACKGROUND IMAGE */
 .signup-right {
   flex: 1;
-  background: url('/src/assets/register.jpg') no-repeat center center/cover;
+  background: url('src/assets/register.jpg') no-repeat center center/cover;
 }
 
 /* RESPONSIVE */
