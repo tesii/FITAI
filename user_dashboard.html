@@ -535,7 +535,7 @@
 
       <!-- CARD 1 — Free -->
       <div class="card" onclick="uploadPhoto()">
-        <img class="card-img" src="/src/assets/jump.png" alt="Upload Photo" />
+        <img class="card-img" src="src/assets/jump.png" alt="Upload Photo" />
         <span class="free-badge">Free</span>
         <div class="overlay">
           <div class="overlay-text">
@@ -551,7 +551,7 @@
 
       <!-- CARD 2 — Premium -->
       <div class="card" onclick="goToWorkout()">
-        <img class="card-img" src="/src/assets/sit.png" alt="AI Plan" />
+        <img class="card-img" src="src/assets/sit.png" alt="AI Plan" />
         <span class="lock-badge"><i class="fa fa-lock"></i> Premium</span>
         <div class="overlay">
           <div class="overlay-text">
@@ -567,7 +567,7 @@
 
       <!-- CARD 3 — Premium -->
       <div class="card" onclick="goToHistory()">
-        <img class="card-img" src="/src/assets/lifting.jpg" alt="Track Progress" />
+        <img class="card-img" src="src/assets/lifting.jpg" alt="Track Progress" />
         <span class="lock-badge"><i class="fa fa-lock"></i> Premium</span>
         <div class="overlay">
           <div class="overlay-text">
@@ -586,17 +586,17 @@
 </div>
 <script type="module">
 
-import { supabase } from "/src/lib/supabaseClient.js";
+import { supabase } from "src/lib/supabaseClient.js";
 
 import { isPremiumUser }
-from "/src/pages/isPremiumUser.js";
+from "src/pages/isPremiumUser.js";
 
 import {
   runAICoach,
   fetchCoachNotifications,
   markNotificationRead
 }
-from "/src/components/CoachEngine.js";
+from "src/components/CoachEngine.js";
 
 /* =========================================================
    NAVIGATION
