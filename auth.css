@@ -105,7 +105,7 @@ html, body {
 /* RIGHT SIDE: BACKGROUND IMAGE */
 .login-right {
   flex: 0.7;
-  background: url('/src/assets/jump.png') no-repeat center center/cover;
+  background: url('src/assets/jump.png') no-repeat center center/cover;
 }
 
 /* RESPONSIVE */
