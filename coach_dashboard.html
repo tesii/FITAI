@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coach Dashboard - FitAI</title>
+
+  <link rel="stylesheet" href="coach_dashboard.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="dashboard-container">
+
+    <!-- HEADER -->
+    <header>
+      <div class="logo">FitAI Coach</div>
+      <nav>
+        <a href="#">Dashboard</a>
+        <a href="#">Clients</a>
+        <a href="#">Settings</a>
+      </nav>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="dashboard-content">
+      <h2>Coach Features</h2>
+
+      <div class="feature-cards">
+
+        <!-- CARD 1 -->
+        <div class="card">
+          <img src="/src/assets/clients.jpg" alt="Clients">
+          <div class="overlay">
+            <div class="overlay-text">
+              <h3>View Clients</h3>
+              <p>Access and manage all your assigned clients</p>
+            </div>
+            <div class="arrow">></div>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="card">
+          <img src="/src/assets/workout.jpg" alt="Workout Plan">
+          <div class="overlay">
+            <div class="overlay-text">
+              <h3>Create Workout Plans</h3>
+              <p>Design custom fitness programs for clients</p>
+            </div>
+            <div class="arrow">></div>
+          </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="card">
+          <img src="/src/assets/progress.jpg" alt="Progress">
+          <div class="overlay">
+            <div class="overlay-text">
+              <h3>Monitor Progress</h3>
+              <p>Track client performance and improvements</p>
+            </div>
+            <div class="arrow">></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- OPTIONAL BOTTOM MENU -->
+    <footer class="bottom-nav">
+      <div><i class="fas fa-home"></i><span>Home</span></div>
+      <div><i class="fas fa-users"></i><span>Clients</span></div>
+      <div><i class="fas fa-dumbbell"></i><span>Plans</span></div>
+      <div><i class="fas fa-user"></i><span>Profile</span></div>
+    </footer>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitAI Premium</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: radial-gradient(circle at top, #1a1f14, #0d0f12 60%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 30px;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, #171a1f, #0f1216);
+      border: 1px solid #262b33;
+      border-radius: 24px;
+      padding: 40px;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4.8rem;
+      color: #d4ff3f;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      color: #9aa3b2;
+      line-height: 1.7;
+      margin-bottom: 25px;
+    }
+
+    .benefits {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+      border-radius: 14px;
+    }
+
+    .tick {
+      width: 22px;
+      height: 22px;
+      background: #38d39f;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: black;
+    }
+
+    .card {
+      background: #171a1f;
+      border: 1px solid #262b33;
+      border-radius: 24px;
+      padding: 35px;
+      position: relative;
+    }
+
+    .badge {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #d4ff3f;
+      color: black;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    .plan {
+      color: #8b95a7;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .price h2 {
+      font-size: 4rem;
+      color: #d4ff3f;
+    }
+
+    .price span {
+      color: #8b95a7;
+      margin-bottom: 10px;
+    }
+
+    .desc {
+      color: #9aa3b2;
+      margin-bottom: 20px;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 10px;
+    }
+
+    .item span:last-child {
+      color: #38d39f;
+      font-weight: 600;
+    }
+
+    .btn {
+      width: 100%;
+      background: #d4ff3f;
+      border: none;
+      padding: 16px;
+      border-radius: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      color: black;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: #bde62f;
+    }
+
+    .secure {
+      text-align: center;
+      font-size: 12px;
+      color: #8b95a7;
+      margin-top: 10px;
+    }
+
+    @media(max-width: 900px){
+      .wrapper {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <!-- LEFT -->
+    <div class="hero">
+      <h1>FITAI<br>PREMIUM</h1>
+
+      <p>
+        Unlock AI-powered fitness intelligence, progress tracking,
+        and personalized workout systems.
+      </p>
+
+      <div class="benefits">
+        <div class="benefit"><div class="tick">✓</div> AI Workout Predictions</div>
+        <div class="benefit"><div class="tick">✓</div> Smart Progress Tracking</div>
+        <div class="benefit"><div class="tick">✓</div> Workout Calendar</div>
+        <div class="benefit"><div class="tick">✓</div> AI Personalized Plans</div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="card">
+
+      <div class="badge">MOST POPULAR</div>
+
+      <div class="plan">Monthly Plan</div>
+
+      <div class="price">
+        <h2>$9</h2>
+        <span>/month</span>
+      </div>
+
+      <p class="desc">
+        Full access to FitAI premium features and AI coaching system.
+      </p>
+
+      <div class="list">
+        <div class="item"><span>AI Strength Prediction</span><span>Included</span></div>
+        <div class="item"><span>Workout Analytics</span><span>Included</span></div>
+        <div class="item"><span>Progress Calendar</span><span>Included</span></div>
+        <div class="item"><span>Unlimited Tracking</span><span>Included</span></div>
+      </div>
+
+      
+       <button id="subscribe-btn" class="btn">
+  Subscribe Now
+</button>
+      <div class="secure">
+        Secure payments powered by Flutterwave / Stripe
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- JS (IMPORTANT FIXED) -->
+  <script type="module" src="./src/pages/subscribe.js"></script>
+
+</body>
+</html>

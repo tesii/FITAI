@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitAI Progress Tracker</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --bg:#0d0f12;
+      --card:#171a1f;
+      --border:#262b33;
+      --text:#f5f5f5;
+      --muted:#8b95a7;
+      --accent:#d4ff3f;
+      --accent-dark:#bde62f;
+      --success:#38d39f;
+    }
+
+    body{
+      background:
+      radial-gradient(circle at top, #1a2012 0%, #0d0f12 60%);
+      min-height:100vh;
+      font-family:'DM Sans', sans-serif;
+      color:var(--text);
+      padding:40px 18px;
+    }
+
+    .container{
+      max-width:1300px;
+      margin:auto;
+    }
+
+    /* HEADER */
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:35px;
+    }
+
+    .logo{
+      font-family:'Bebas Neue', sans-serif;
+      font-size:2.8rem;
+      color:var(--accent);
+      letter-spacing:2px;
+    }
+
+    .upload-btn{
+      background:var(--accent);
+      color:black;
+      border:none;
+      padding:14px 22px;
+      border-radius:16px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.2s;
+      font-size:15px;
+    }
+
+    .upload-btn:hover{
+      background:var(--accent-dark);
+      transform:translateY(-2px);
+    }
+
+    /* HERO */
+    .hero{
+      background:linear-gradient(145deg,#171a1f,#101317);
+      border:1px solid var(--border);
+      border-radius:30px;
+      padding:45px;
+      margin-bottom:35px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      width:300px;
+      height:300px;
+      background:rgba(212,255,63,0.08);
+      border-radius:50%;
+      top:-100px;
+      right:-80px;
+      filter:blur(10px);
+    }
+
+    .hero h1{
+      font-family:'Bebas Neue', sans-serif;
+      font-size:5rem;
+      line-height:1;
+      color:var(--accent);
+      margin-bottom:18px;
+      position:relative;
+      z-index:2;
+    }
+
+    .hero p{
+      max-width:650px;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:16px;
+      position:relative;
+      z-index:2;
+    }
+
+    /* STATS */
+    .stats{
+      margin-top:35px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:20px;
+      position:relative;
+      z-index:2;
+    }
+
+    .stat-card{
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.05);
+      border-radius:22px;
+      padding:22px;
+    }
+
+    .stat-card h2{
+      font-size:2.2rem;
+      color:var(--accent);
+      margin-bottom:5px;
+    }
+
+    .stat-card span{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* SECTION TITLE */
+    .section-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:22px;
+    }
+
+    .section-title h2{
+      font-size:1.6rem;
+    }
+
+    .month-filter{
+      background:#171a1f;
+      border:1px solid var(--border);
+      color:white;
+      padding:12px 18px;
+      border-radius:14px;
+      outline:none;
+    }
+
+    /* GALLERY */
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:24px;
+    }
+
+    .photo-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:24px;
+      overflow:hidden;
+      transition:.25s;
+      position:relative;
+    }
+
+    .photo-card:hover{
+      transform:translateY(-6px);
+      border-color:rgba(212,255,63,0.35);
+    }
+
+    .photo{
+      width:100%;
+      height:320px;
+      object-fit:cover;
+      display:block;
+    }
+
+    .photo-info{
+      padding:20px;
+    }
+
+    .photo-info h3{
+      margin-bottom:8px;
+      font-size:1.2rem;
+    }
+
+    .photo-info p{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .tag{
+      position:absolute;
+      top:16px;
+      left:16px;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(8px);
+      color:white;
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    /* EMPTY */
+    .empty{
+      margin-top:40px;
+      border:2px dashed rgba(255,255,255,0.08);
+      border-radius:28px;
+      padding:60px 20px;
+      text-align:center;
+      background:rgba(255,255,255,0.02);
+    }
+
+    .empty h3{
+      font-size:1.5rem;
+      margin-bottom:10px;
+    }
+
+    .empty p{
+      color:var(--muted);
+      margin-bottom:25px;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+
+      .hero{
+        padding:30px;
+      }
+
+      .hero h1{
+        font-size:3.6rem;
+      }
+
+      .topbar{
+        flex-direction:column;
+        gap:18px;
+      }
+
+      .section-title{
+        flex-direction:column;
+        gap:14px;
+        align-items:flex-start;
+      }
+
+      .photo{
+        height:280px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- TOP -->
+    <div class="topbar">
+      <div class="logo">FITAI</div>
+
+ 
+       <button class="upload-btn"
+        onclick="window.location.href='progress-photo.html'">
+        + Upload Monthly Photo
+      </button>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+
+      <h1>
+        PROGRESS<br>
+        TRACKER
+      </h1>
+
+      <p>
+        Visualize your body transformation journey month by month.
+        Upload progress photos, compare changes, and monitor your
+        physical evolution with AI-powered fitness tracking.
+      </p>
+
+      <div class="stats">
+
+        <div class="stat-card">
+          <h2>12</h2>
+          <span>Total Uploads</span>
+        </div>
+
+        <div class="stat-card">
+          <h2>6</h2>
+          <span>Months Tracked</span>
+        </div>
+
+        <div class="stat-card">
+          <h2>+8kg</h2>
+          <span>Muscle Progress</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION -->
+    <div class="section-title">
+      <h2>Monthly Transformation Timeline</h2>
+
+      <select class="month-filter">
+        <option>All Months</option>
+        <option>January</option>
+        <option>February</option>
+        <option>March</option>
+        <option>April</option>
+      </select>
+    </div>
+
+    <!-- GALLERY -->
+    <div class="gallery">
+
+      <!-- CARD -->
+      <div class="photo-card">
+
+        <div class="tag">January 2026</div>
+
+        <img
+          class="photo"
+          src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200"
+          alt=""
+        >
+
+        <div class="photo-info">
+          <h3>Month 1 Progress</h3>
+          <p>
+            Starting point of the transformation journey.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- CARD -->
+      <div class="photo-card">
+
+        <div class="tag">February 2026</div>
+
+        <img
+          class="photo"
+          src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200"
+          alt=""
+        >
+
+        <div class="photo-info">
+          <h3>Month 2 Progress</h3>
+          <p>
+            Visible muscle development and improved conditioning.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- CARD -->
+      <div class="photo-card">
+
+        <div class="tag">March 2026</div>
+
+        <img
+          class="photo"
+          src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=1200"
+          alt=""
+        >
+
+        <div class="photo-info">
+          <h3>Month 3 Progress</h3>
+          <p>
+            Increased strength and physique improvements.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- EMPTY -->
+    <div class="empty">
+
+      <h3>No More Progress Photos</h3>
+
+      <p>
+        Upload monthly photos to build your transformation timeline.
+      </p>
+
+      <button class="upload-btn">
+        Upload First Photo
+      </button>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

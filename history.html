@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workout History</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── RESET & BASE ─────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0e0f11;
+      --surface:  #161719;
+      --card:     #1e2024;
+      --border:   #2a2d33;
+      --accent:   #c8f135;
+      --accent2:  #4ade80;
+      --red:      #f87171;
+      --text:     #f0f0f0;
+      --muted:    #7a7f8a;
+      --radius:   12px;
+      --radius-sm:8px;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* ── LAYOUT ───────────────────────────── */
+    .app {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-height: 100vh;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 16px 80px;
+    }
+
+    /* ── HEADER ───────────────────────────── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+
+
+
+    header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    header h1 span {
+      color: var(--text);
+    }
+
+    #toggle-view-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--card);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 7px 16px;
+      cursor: pointer;
+      transition: all .18s;
+    }
+    #toggle-view-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── WEEKLY SUMMARY ───────────────────── */
+    #weekly-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-card .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    .stat-card strong {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    /* ── WEEK NAV ─────────────────────────── */
+    #week-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 455px;
+    }
+  
+    #week-title {
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .nav-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      transition: all .15s;
+    }
+    .nav-btn:hover {
+      background: var(--border);
+    }
+
+    /* ── CALENDAR FILTERS ─────────────────── */
+    #calendar-filters {
+      display: none;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    #calendar-filters select {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ── CALENDAR DAYS ────────────────────── */
+    #calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 122px;
+
+    }
+
+    .day-pill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 4px;
+      cursor: pointer;
+      transition: all .18s;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+    }
+
+    .day-pill:not(.readonly):hover {
+      border-color: var(--accent);
+      background: #1e2a0d;
+    }
+
+    .day-pill.today {
+      border-color: #4a5568;
+    }
+
+    .day-pill.today .day-num {
+      color: var(--accent);
+    }
+
+    .day-pill.has-workout {
+      border-color: var(--accent);
+      background: #1a2208;
+    }
+
+    .day-pill.readonly {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .day-pill.blank {
+      background: transparent;
+      border-color: transparent;
+    }
+
+    .day-name {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    .day-num {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .dot.empty {
+      background: var(--border);
+    }
+
+    .month-header {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-align: center;
+      padding: 6px 0;
+    }
+
+    /* ── DAY PANEL ────────────────────────── */
+    #day-panel {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 100%;
+      max-width: 680px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-radius: 20px 20px 0 0;
+      padding: 20px 20px 40px;
+      z-index: 100;
+      transition: transform .32s cubic-bezier(.4,0,.2,1);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    #day-panel.open {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── PREVIEW HEADER ───────────────────── */
+    .preview-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .preview-header h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+    }
+
+    .close-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 13px;
+      flex-shrink: 0;
+      transition: all .15s;
+    }
+    .close-btn:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    /* ── STATS ROW ────────────────────────── */
+    .stats-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      min-width: 80px;
+    }
+
+    .stat-chip .stat-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .stat-chip .stat-value {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .stat-chip small {
+      font-size: 0.7em;
+      color: var(--muted);
+    }
+
+    .progress-up .stat-value   { color: var(--accent2); }
+    .progress-down .stat-value { color: var(--red); }
+    .progress-same .stat-value { color: var(--muted); }
+
+    /* ── EXERCISE PREVIEW LIST ────────────── */
+    .exercise-preview-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .exercise-preview-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+    }
+
+    .ex-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .ex-detail {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── EXERCISE EDIT CARDS ──────────────── */
+    .exercise-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .exercise-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .exercise-card .exercise-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .ex-name-input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      padding: 7px 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      transition: border-color .15s;
+    }
+    .ex-name-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .remove-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: var(--radius-sm);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      flex-shrink: 0;
+      transition: all .15s;
+    }
+    .remove-btn:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .exercise-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .exercise-stats label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .exercise-stats label span {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .exercise-stats input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      width: 100%;
+      transition: border-color .15s;
+    }
+    .exercise-stats input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* ── EDIT ACTIONS ─────────────────────── */
+    .edit-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    /* ── BUTTONS ──────────────────────────── */
+    .start-btn, .save-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #0e0f11;
+      border: none;
+      border-radius: var(--radius);
+      padding: 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: opacity .18s, transform .12s;
+    }
+    .start-btn:hover, .save-btn:hover { opacity: .88; }
+    .start-btn:active, .save-btn:active { transform: scale(0.98); }
+    .start-btn:disabled, .save-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .add-btn {
+      flex: 1;
+      background: var(--card);
+      border: 1px dashed var(--border);
+      color: var(--muted);
+      border-radius: var(--radius);
+      padding: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .18s;
+    }
+    .add-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .save-btn {
+      flex: 2;
+      width: auto;
+    }
+
+    /* ── LOADING & EMPTY ──────────────────── */
+    .loading-spinner {
+      grid-column: 1 / -1;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      border-radius: 2px;
+      animation: shimmer 1.2s infinite;
+    }
+
+    /* ── SAVE MESSAGES ───────────────────── */
+    .save-message {
+      padding: 12px 16px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      font-weight: 600;
+      animation: fadeSlide 0.25s ease;
+    }
+
+    .save-message.success {
+      background: rgba(46, 204, 113, 0.12);
+      color: #2ecc71;
+      border: 1px solid rgba(46, 204, 113, 0.25);
+    }
+
+    .save-message.error {
+      background: rgba(231, 76, 60, 0.12);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.25);
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes shimmer {
+      0%   { opacity: 1; }
+      50%  { opacity: .3; }
+      100% { opacity: 1; }
+    }
+
+    .empty-state {
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+      padding: 24px 0;
+    }
+
+    /* ── SCROLLBAR ────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    /* ── Notification Styles ───────────────── */
+    #notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      display: none;
+      z-index: 9999;
+      max-width: 300px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    #notification.success {
+      background: rgba(46, 204, 113, 0.12);
+      color: #2ecc71;
+      border: 1px solid rgba(46, 204, 113, 0.25);
+    }
+    #notification.error {
+      background: rgba(231, 76, 60, 0.12);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.25);
+    }
+    /* MONTH VIEW - Multiple Months */
+.month-section {
+  margin-bottom: 32px;
+}
+
+.month-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.35rem;
+  margin: 8px 0 12px 4px;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+/* Make day pills slightly smaller in month view */
+.month-grid .day-pill {
+  padding: 8px 4px;
+  font-size: 13px;
+}
+
+.month-grid .day-num {
+  font-size: 13.5px;
+}
+
+.month-grid .day-pill.has-workout {
+  background: #1a2208;
+  border-color: var(--accent);
+}
+.icon{
+  font-size: 20px;
+}
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <!-- HEADER -->
+
+  <!-- HEADER -->
+ <header>
+  <button onclick="history.back()" class="nav-btn">← Back</button>
+
+  <h1>WORKOUT <span>HISTORY</span></h1>
+
+  <div style="display:flex; gap:8px; align-items:center;">
+    <div class="month-nav"></div>
+
+    <button id="toggle-view-btn" aria-pressed="false">
+      <span class="icon">📅</span>
+    </button>
+  </div>
+</header>
+
+  <!-- WEEKLY STATS -->
+  <div id="weekly-summary"></div>
+
+  <!-- FILTERS -->
+  <div id="calendar-filters">
+    <select id="filter-month"></select>
+    <select id="filter-year"></select>
+  </div>
+
+  <!-- CONTROLS WRAPPER -->
+  <div class="controls">
+
+  
+  <!-- Week Title + Navigation -->
+<div id="weekly-calendar">
+  <div id="calendar-days"></div>
+  <div id="week-nav">
+    <button class="nav-btn" id="btn-prev-week">‹</button>
+    <span id="week-title">Week of …</span>
+    <button class="nav-btn" id="btn-next-week">›</button>
+  </div>
+</div>
+
+<!-- DAY PANEL -->
+<div id="day-panel">
+  <div id="day-results"></div>
+</div>
+
+<!-- NOTIFICATION -->
+<div id="notification"></div>
+
+<script type="module" src="./src/pages/historycard.js"></script>
+
+</body>
+</html>

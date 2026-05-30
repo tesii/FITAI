@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitAI Login</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/auth.css">
+
+  <style>
+    #message {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .success { color: limegreen; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <div class="login-left">
+    <h1>FitAI Login</h1>
+
+    <form id="login-form">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="signup-link">
+      Don't have an account? <a href="/signup.html">Sign Up</a>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <div class="login-right"></div>
+</div>
+
+<!-- IMPORTANT: correct path -->
+<script type="module" src="/src/pages/login.js"></script>
+
+</body>
+</html>

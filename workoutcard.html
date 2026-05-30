@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>FitTrack</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="workoutcard.css"/>
+
+
+
+</head>
+
+<body>
+
+<div id="app">
+
+  <!-- ══════════════════════════════════════
+       ALL EXERCISES SCREEN
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-all">
+<!-- DASHBOARD -->
+<div class="dashboard">
+ <div class="dash-card hello-card">
+    <div>
+      <div class="dash-title">Good Morning </div>
+      <div class="dash-value">Patience K</div>
+    </div>
+  </div>
+  <!-- Streak -->
+  <div class="dash-card streak-card">
+    <img src="src/assets/sit.png" class="streak-img"/>
+    <div>
+      <div class="dash-title">7 Day Streak</div>
+            <div class="dash-title">Challenge is live</div>
+                        <button class="button">Join now</button>
+
+
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="dash-card dash-stats">
+  <h1>Today's Progress</h1>
+  <br><p>Small steps big changes</p></br>
+    <div class="stat">
+      <span>Steps</span>
+      <strong>8,420</strong>
+    </div>
+
+    <div class="stat">
+      <span>Active</span>
+      <strong>42 min</strong>
+    </div>
+
+    <div class="stat">
+      <span>Calories</span>
+      <strong>520 kcal</strong>
+    </div>
+
+    <div class="stat">
+      <span>Distance</span>
+      <strong>4.2 km</strong>
+    </div>
+  </div>
+
+</div>
+    <div class="page-head">
+      <div>
+        <div class="page-title">Latest Workout</div>
+        <div class="page-sub" id="all-sub">Every session counts</div>
+
+        <div class="muscle-tabs">
+          <button class="muscle-tab active">All</button>
+          <button class="muscle-tab">Glutes</button>
+          <button class="muscle-tab">Shoulders</button>
+          <button class="muscle-tab">Back</button>
+          <button class="muscle-tab">Legs</button>
+          <button class="muscle-tab">Chest</button>
+          <button class="muscle-tab">Arms</button>
+          <button class="muscle-tab">Core</button>
+        </div>
+      </div>
+
+      <div id="all-chips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    </div>
+
+    <div id="all-body"><div class="spin"></div></div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       HISTORY SCREEN
+  ══════════════════════════════════════ -->
+  <div class="screen active" id="screen-history">
+
+    <div class="page-head">
+      <div>
+        <div class="page-title">History</div>
+        <div class="page-sub" id="hist-sub">Loading…</div>
+      </div>
+
+      <div id="hist-chips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box s-yellow">
+        <div class="stat-val lime" id="st-improved">—</div>
+        <div class="stat-lbl">Improved</div>
+      </div>
+
+      <div class="stat-box s-red">
+        <div class="stat-val red" id="st-declined">—</div>
+        <div class="stat-lbl">Declined</div>
+      </div>
+
+      <div class="stat-box s-blue">
+        <div class="stat-val blue" id="st-streak">—</div>
+        <div class="stat-lbl">Streak Wk</div>
+      </div>
+    </div>
+
+    <div class="week-filter-bar" id="hist-week-filter"></div>
+    <div id="hist-totals-bar"></div>
+
+    <div id="hist-body"><div class="spin"></div></div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════
+       WORKOUT SCREEN
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-workout">
+
+    <div class="workout-header">
+      <div class="wh-top">
+        <div>
+          <div class="label">Active Workout</div>
+          <div class="timer-display" id="wTimerDisplay">00:00</div>
+        </div>
+
+        <div style="text-align:right">
+          <div class="label">Done</div>
+          <div class="done-count-val" id="wDoneCount">0 / 0</div>
+        </div>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="wProgressFill"></div>
+      </div>
+    </div>
+
+    <div id="workout-body" style="padding-top:.9rem">
+      <div class="spin"></div>
+    </div>
+
+    <div style="padding:0 1.2rem 1rem">
+      <button class="btn-primary" id="finishWorkoutBtn" onclick="finishWorkout()" disabled>
+        Save Workout
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PLAN SCREEN
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-plan">
+    <div id="plan-body"><div class="spin"></div></div>
+  </div>
+
+</div>
+
+<!-- NAV -->
+<nav>
+
+  <button class="nav-btn" id="nav-all" onclick="switchTab('all')">
+    <span>All</span>
+  </button>
+
+
+  <button class="nav-btn" id="nav-workout" onclick="switchTab('workout')">
+    <span>Workout</span>
+  </button>
+
+  <button class="nav-btn" id="nav-plan" onclick="switchTab('plan')">
+    <span>Plan</span>
+  </button>
+
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="src/pages/workoutcard.js"></script>
+
+</body>
+</html>

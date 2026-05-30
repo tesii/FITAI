@@ -1,0 +1,126 @@
+/* ── ROOT COLORS ── */
+:root {
+  --dark-bg: #1a1a1a;
+  --dark-form: #242424;
+  --yellow: #facc15;
+  --light: #e2e8f0;
+}
+
+/* ── GLOBAL STYLING ── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'DM Mono', monospace;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+/* ── SPLIT SCREEN LAYOUT ── */
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* LEFT SIDE: LOGIN FORM */
+.login-left {
+  flex: 1;
+  background: var(--dark-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 60px;
+  color: var(--light);
+}
+
+.login-left h1 {
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  color: var(--yellow);
+}
+
+.login-left form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-left input {
+  background: var(--dark-form);
+  border: none;
+  padding: 18px 15px;
+  margin-bottom: 25px;
+  font-size: 1.2rem;
+  color: var(--light);
+  border-radius: 8px;
+}
+
+.login-left input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+.login-left input:focus {
+  outline: 2px solid var(--yellow);
+}
+
+.login-left button {
+  background: var(--yellow);
+  border: none;
+  padding: 18px 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--dark-bg);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.login-left button:hover {
+  background: #fcd34d;
+  transform: scale(1.03);
+}
+
+.login-left .signup-link {
+  margin-top: 20px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.login-left .signup-link a {
+  color: var(--yellow);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.login-left .signup-link a:hover {
+  color: #fcd34d;
+}
+
+/* RIGHT SIDE: BACKGROUND IMAGE */
+.login-right {
+  flex: 0.7;
+  background: url('/src/assets/jump.png') no-repeat center center/cover;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .login-left, .login-right {
+    flex: none;
+    width: 100%;
+    height: 50vh;
+  }
+
+  .login-left {
+    padding: 40px 20px;
+  }
+}

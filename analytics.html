@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workout Analytics</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="analytics.css" />
+</head>
+<body>
+
+  <div class="analytics-page">
+
+    <!-- HEADER -->
+    <div class="analytics-header glass">
+      <div>
+        <p class="mini">Performance Analytics</p>
+        <h1>Workout Intelligence</h1>
+      </div>
+
+      <button class="refresh-btn" id="refresh-btn">
+        Refresh Data
+      </button>
+    </div>
+
+    <!-- TOP STATS -->
+    <div class="stats-grid">
+
+      <div class="stat-card glass">
+        <p>Total Volume</p>
+        <h2 id="total-volume">0 kg</h2>
+      </div>
+
+      <div class="stat-card glass">
+        <p>Average Strength</p>
+        <h2 id="avg-strength">0 kg</h2>
+      </div>
+
+      <div class="stat-card glass">
+        <p>Total Sessions</p>
+        <h2 id="total-sessions">0</h2>
+      </div>
+
+      <div class="stat-card glass">
+        <p>Workout Duration</p>
+        <h2 id="duration">0 mins</h2>
+      </div>
+
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts-grid">
+
+      <div class="chart-card glass">
+        <div class="chart-head">
+          <h3>Weekly Volume</h3>
+        </div>
+        <canvas id="volumeChart"></canvas>
+      </div>
+
+      <div class="chart-card glass">
+        <div class="chart-head">
+          <h3>Strength Progression</h3>
+        </div>
+        <canvas id="strengthChart"></canvas>
+      </div>
+
+      <div class="chart-card glass">
+        <div class="chart-head">
+          <h3>Workout Split</h3>
+        </div>
+        <canvas id="splitChart"></canvas>
+      </div>
+
+      <div class="chart-card glass">
+        <div class="chart-head">
+          <h3>Exercise Frequency</h3>
+        </div>
+        <canvas id="frequencyChart"></canvas>
+      </div>
+
+    </div>
+
+    <!-- EXERCISE TABLE -->
+    <div class="exercise-table glass">
+
+      <div class="table-head">
+        <h3>Top Exercises</h3>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Volume</th>
+            <th>Sets</th>
+            <th>Best Weight</th>
+          </tr>
+        </thead>
+
+        <tbody id="exercise-table-body"></tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+  <script type="module" src="src/pages/analytics.js"></script>
+</body>
+</html>

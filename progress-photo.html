@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Progress Photo - FitAI</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body{
+      margin:0;
+      font-family:'DM Sans',sans-serif;
+      background:#0d0f12;
+      color:white;
+      display:flex;
+      justify-content:center;
+      padding:40px;
+    }
+
+    .container{
+      width:100%;
+      max-width:900px;
+      background:#171a1f;
+      border:1px solid #262b33;
+      border-radius:20px;
+      padding:30px;
+    }
+
+    h1{
+      font-family:'Bebas Neue',sans-serif;
+      color:#d4ff3f;
+      font-size:3rem;
+      margin-bottom:10px;
+    }
+
+    .upload-box{
+      border:2px dashed #d4ff3f;
+      padding:20px;
+      border-radius:15px;
+      text-align:center;
+      cursor:pointer;
+      margin-bottom:20px;
+    }
+
+    .upload-box input{
+      display:none;
+    }
+
+    .preview{
+      width:100%;
+      height:300px;
+      object-fit:cover;
+      margin-top:15px;
+      border-radius:15px;
+      display:none;
+    }
+
+    .form-group{
+      margin-bottom:15px;
+    }
+
+    input, textarea{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid #262b33;
+      background:#0f1216;
+      color:white;
+    }
+
+    button{
+      width:100%;
+      padding:15px;
+      background:#d4ff3f;
+      border:none;
+      border-radius:12px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    button:hover{
+      background:#b7de30;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>UPLOAD PROGRESS PHOTO</h1>
+
+    <form>
+
+      <!-- IMAGE UPLOAD -->
+      <div class="upload-box" onclick="document.getElementById('photoInput').click()">
+        <p>Click to upload photo</p>
+
+        <input type="file" id="photoInput" accept="image/*">
+
+        <img id="preview" class="preview" />
+      </div>
+
+      <!-- MONTH -->
+      <div class="form-group">
+        <input type="text" placeholder="Month (e.g. May 2026)" class="form-control">
+      </div>
+
+      <!-- WEIGHT -->
+      <div class="form-group">
+        <input type="number" placeholder="Weight (optional)" class="form-control">
+      </div>
+
+      <!-- NOTES -->
+      <div class="form-group">
+        <textarea placeholder="Notes..." class="form-control"></textarea>
+      </div>
+
+      <button type="submit">
+        Save Progress Photo
+      </button>
+
+    </form>
+
+  </div>
+
+  <!-- SCRIPT CALL -->
+  <script type="module" src="./src/components/ProgressPhotoUpload.js"></script>
+
+</body>
+</html>

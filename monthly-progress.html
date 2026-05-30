@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitAI — Progress Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:        #080a0d;
+      --surface:   #0f1217;
+      --border:    #1c2028;
+      --border2:   #252b35;
+      --text:      #e8eaf0;
+      --muted:     #5a6070;
+      --accent:    #c8ff00;
+      --accent2:   #00e5ff;
+      --gain:      #c8ff00;
+      --loss:      #ff4d6d;
+      --neutral:   #7c8fa6;
+      --font-head: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --radius:    14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 400;
+      min-height: 100vh;
+      padding: 32px 20px 60px;
+    }
+
+    /* ── Subtle grid background ── */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200,255,0,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,255,0,.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+    .page-header h1 {
+      font-family: var(--font-head);
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      letter-spacing: .04em;
+      line-height: 1;
+      color: #fff;
+    }
+    .page-header .pill {
+      background: var(--accent);
+      color: #000;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 99px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-bottom: 20px;
+    }
+
+    /* ── Select row ── */
+    .select-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .field label {
+      display: block;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+    select {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 10px;
+      background: #12151b;
+      color: var(--text);
+      border: 1px solid var(--border2);
+      font-family: var(--font-body);
+      font-size: .9rem;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6070' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 13px center;
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+    select:focus { outline: none; border-color: var(--accent); }
+
+    /* ── Compare button ── */
+    button#compareBtn {
+      width: 100%;
+      padding: 13px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      letter-spacing: .08em;
+      cursor: pointer;
+      transition: opacity .2s, transform .15s;
+    }
+    button#compareBtn:hover { opacity: .88; transform: translateY(-1px); }
+    button#compareBtn:active { transform: translateY(0); }
+
+    /* ── Two-column photo grid ── */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .month-label {
+      font-family: var(--font-head);
+      font-size: 1.3rem;
+      letter-spacing: .06em;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    /* ── Photo card ── */
+    .photo-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .photo-wrap {
+      width: 100%;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: #12151b;
+    }
+    .photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .35s ease;
+    }
+    .photo-wrap img:hover { transform: scale(1.03); }
+
+    .photo-meta {
+      padding: 12px 14px;
+    }
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .meta-row:last-child { border-bottom: none; }
+    .meta-label { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    .meta-value { font-size: .9rem; font-weight: 600; }
+    .meta-value.highlight { color: var(--accent); font-family: var(--font-head); font-size: 1.05rem; letter-spacing: .04em; }
+    .meta-notes {
+      font-size: .78rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+    .no-data {
+      color: var(--muted);
+      font-size: .85rem;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    /* ── Result panel ── */
+    #result {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 28px;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .result-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: .04em;
+      line-height: 1;
+      color: var(--accent);
+    }
+    .result-period {
+      font-size: .75rem;
+      color: var(--muted);
+      text-align: right;
+      letter-spacing: .06em;
+    }
+
+    /* ── Stats grid ── */
+    .stats-grid {
+      background: #0a0c10;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 22px;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      font-size: .85rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-row span:first-child { color: var(--muted); }
+    .stat-row span:last-child { font-weight: 600; }
+    .stat-row em { font-style: normal; margin-left: 6px; }
+    em.pos { color: var(--gain); }
+    em.neg { color: var(--loss); }
+
+    /* ── Muscle section ── */
+    .muscle-heading {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .muscle-tag {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #0a0c10;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 9px;
+      transition: border-color .2s;
+    }
+    .muscle-tag.gain  { border-left: 3px solid var(--gain); }
+    .muscle-tag.loss  { border-left: 3px solid var(--loss); }
+    .muscle-tag.neutral { border-left: 3px solid var(--neutral); }
+
+    .muscle-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .muscle-info { flex: 1; }
+    .muscle-info strong { display: block; font-size: .9rem; margin-bottom: 2px; }
+    .muscle-info small { font-size: .75rem; color: var(--muted); }
+    .muscle-badge {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      padding: 4px 10px;
+      border-radius: 99px;
+    }
+    .gain    .muscle-badge { background: rgba(200,255,0,.12); color: var(--gain); }
+    .loss    .muscle-badge { background: rgba(255,77,109,.12); color: var(--loss); }
+    .neutral .muscle-badge { background: rgba(124,143,166,.12); color: var(--neutral); }
+    .warn    .muscle-badge { background: rgba(255,180,0,.12);  color: #ffb400; }
+    .fail    .muscle-badge { background: rgba(255,77,109,.18); color: var(--loss); }
+
+    .muscle-tag.warn { border-left: 3px solid #ffb400; }
+    .muscle-tag.fail { border-left: 3px solid var(--loss); animation: pulse-fail .8s ease-in-out 2; }
+
+    @keyframes pulse-fail {
+      0%, 100% { box-shadow: none; }
+      50%       { box-shadow: 0 0 10px rgba(255,77,109,.35); }
+    }
+
+    /* ── Placeholder result text ── */
+    .result-placeholder {
+      color: var(--muted);
+      font-size: .9rem;
+      text-align: center;
+      padding: 12px 0;
+    }
+
+    /* ── Session badges ── */
+    .session-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 99px;
+      border: 1px solid;
+    }
+    .badge.goal   { background: rgba(200,255,0,.08);  border-color: rgba(200,255,0,.3);  color: var(--accent); }
+    .badge.level  { background: rgba(0,229,255,.08);  border-color: rgba(0,229,255,.3);  color: var(--accent2); }
+    .badge.muscle { background: rgba(255,77,109,.08); border-color: rgba(255,77,109,.3); color: #ff4d6d; }
+
+    /* ── Coach comment ── */
+    .coach-comment {
+      background: linear-gradient(135deg, #0e1a0a 0%, #0a1218 100%);
+      border: 1px solid rgba(200,255,0,.18);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+    .coach-label {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .coach-comment p {
+      font-size: .88rem;
+      line-height: 1.65;
+      color: #c8d0dc;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .select-row, .photo-grid { grid-template-columns: 1fr; }
+      .result-header { flex-direction: column; gap: 6px; }
+    }
+    .back-btn{
+       margin-top: 15px;
+      padding: 12px;
+      width: 20%;
+      background: #00e5ff;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 10px;
+}
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>Progress Tracker</h1>
+    <span class="pill">FitAI</span>
+  </div>
+
+  <!-- Session context badges (goal · level · muscle) -->
+  <div class="session-meta" id="sessionMeta"></div>
+
+  <!-- Controls -->
+  <div class="card">
+    <div class="select-row">
+      <div class="field">
+        <label>Month A — Baseline</label>
+        <select id="monthA"></select>
+      </div>
+      <div class="field">
+        <label>Month B — Comparison</label>
+        <select id="monthB"></select>
+      </div>
+    </div>
+    <button id="compareBtn" onclick="compareMonths()">Compare Progress</button>
+  </div>
+
+  <!-- Photos -->
+  <div class="photo-grid">
+    <div class="card">
+      <div class="month-label" id="labelA">Month A</div>
+      <div id="viewA"><div class="no-data">Select a month above</div></div>
+    </div>
+    <div class="card">
+      <div class="month-label" id="labelB">Month B</div>
+      <div id="viewB"><div class="no-data">Select a month above</div></div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="result">
+    <div class="result-placeholder">Select two months and hit Compare to see your analysis</div>
+  </div>
+
+</div>
+<button class="back-btn" onclick="window.location.href='test-pose.html'">
+  ← Upload your monthly picture
+</button><script type="module" src="./src/components/monthlyProgress.js"></script>
+</body>
+</html>

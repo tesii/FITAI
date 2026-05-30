@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Profile</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="profile.css" />
+
+</head>
+
+<body>
+
+<div class="profile-container">
+
+  <!-- LEFT SIDE -->
+  <div class="profile-left">
+
+    <h1>Create Your Fitness Profile</h1>
+
+    <form id="profileForm">
+
+      <!-- HEIGHT -->
+      <input type="number" id="height" placeholder="Height (cm)" />
+
+      <!-- WEIGHT -->
+      <input type="number" id="weight" placeholder="Weight (kg)" />
+
+      <!-- TARGET MUSCLES -->
+      <label>Target Muscles</label>
+      <select id="muscles" multiple>
+        <option value="glute_maximus">Glute Maximus</option>
+        <option value="glute_medius">Glute Medius</option>
+        <option value="glute_minimus">Glute Minimus</option>
+        <option value="rectus_abdominis">Abs</option>
+        <option value="obliques">Obliques</option>
+        <option value="quadriceps">Quadriceps</option>
+        <option value="hamstrings">Hamstrings</option>
+        <option value="chest">Chest</option>
+        <option value="back">Back</option>
+        <option value="biceps">Biceps</option>
+        <option value="triceps">Triceps</option>
+      </select>
+
+      <small style="margin-bottom: 10px; color: #aaa;">
+        Hold Ctrl (Windows) or Cmd (Mac) to select multiple
+      </small>
+
+      <!-- FITNESS GOAL -->
+      <label for="goal">Fitness Goal</label>
+      <select id="goal">
+    
+        <option value="recomposition">Body Recomposition</option>
+        <option value="bulking">Bulking (Muscle Gain)</option>
+        <option value="cutting">Cutting (Fat Loss)</option>
+        <option value="maintenance">Maintenance</option>
+        <option value="bodybuilding">Bodybuilding</option>
+        <option value="calisthenics">Calisthenics</option>
+        <option value="strongman">Strongman</option>
+
+      </select>
+
+      <!-- SAVE BUTTON -->
+      <button type="button" id="saveBtn">Save Profile</button>
+
+    </form>
+
+    <!-- MESSAGE -->
+    <p id="message"></p>
+
+  </div>
+
+  <!-- RIGHT SIDE IMAGE -->
+  <div class="profile-right"></div>
+
+</div>
+
+<!-- JS (IMPORTANT: module for import to work) -->
+<script type="module" src="/src/pages/muscle.js"></script>
+
+</body>
+</html>

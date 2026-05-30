@@ -1,0 +1,138 @@
+:root {
+  --dark-bg: #1a1a1a;
+  --dark-form: #242424;
+  --yellow: #facc15;
+  --light: #e2e8f0;
+}
+
+/* ── GLOBAL STYLING ── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'DM Mono', monospace;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+/* ── SPLIT SCREEN LAYOUT ── */
+.signup-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* LEFT SIDE: SIGNUP FORM */
+.signup-left {
+  flex: 1;
+  background: var(--dark-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 60px;
+  color: var(--light);
+}
+
+.signup-left h1 {
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  color: var(--yellow);
+}
+
+.signup-left form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-left input,
+.signup-left select {
+  background: var(--dark-form);
+  border: none;
+  padding: 18px 15px;
+  margin-bottom: 25px;
+  font-size: 1.2rem;
+  color: var(--light);
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.25s;
+}
+
+.signup-left input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+.signup-left input:focus,
+.signup-left select:focus {
+  outline: 2px solid var(--yellow);
+}
+
+/* BUTTON */
+.signup-left button {
+  background: var(--yellow);
+  border: none;
+  padding: 18px 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--dark-bg);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.signup-left button:hover {
+  background: #fcd34d;
+  transform: scale(1.03);
+}
+
+/* LOGIN LINK */
+.signup-left .login-link {
+  margin-top: 20px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.signup-left .login-link a {
+  color: #ffffff; /* white link for signup */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.signup-left .login-link a:hover {
+  color: var(--yellow);
+}
+
+/* MESSAGE */
+#message {
+  margin-top: 10px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* RIGHT SIDE: BACKGROUND IMAGE */
+.signup-right {
+  flex: 1;
+  background: url('/src/assets/register.jpg') no-repeat center center/cover;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .signup-container {
+    flex-direction: column;
+  }
+
+  .signup-left, .signup-right {
+    flex: none;
+    width: 100%;
+    height: 50vh;
+  }
+
+  .signup-left {
+    padding: 40px 20px;
+  }
+}

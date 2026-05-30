@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard — FitAI</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    /* ── Tokens ─────────────────────────────────── */
+    :root {
+      --bg:        #080a0d;
+      --surface:   #0f1217;
+      --surface2:  #13171e;
+      --border:    #1c2028;
+      --border2:   #252b35;
+      --text:      #e8eaf0;
+      --muted:     #58606e;
+      --accent:    #c8ff00;
+      --accent-dim:rgba(200,255,0,.08);
+      --red:       #ff4d6d;
+      --font-head: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --ease:      cubic-bezier(.22,.68,0,1.2);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* subtle dot-grid texture */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background-image: radial-gradient(rgba(200,255,0,.07) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Layout ─────────────────────────────────── */
+    .dashboard-container {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ─────────────────────────────────── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 40px;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      background: rgba(8,10,13,.75);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: var(--font-head);
+      font-size: 1.9rem;
+      letter-spacing: .1em;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    nav {
+      display: flex;
+      gap: 6px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .8rem;
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 7px 14px;
+      border-radius: 8px;
+      transition: color .2s, background .2s;
+    }
+
+    nav a:hover {
+      color: var(--text);
+      background: var(--surface2);
+    }
+
+    /* ── Content ─────────────────────────────────── */
+    .dashboard-content {
+      flex: 1;
+      padding: 52px 40px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section-label {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      letter-spacing: .04em;
+      line-height: 1;
+      color: #fff;
+      margin-bottom: 48px;
+    }
+
+    .section-title span {
+      color: var(--accent);
+    }
+
+    /* ── Feature Cards ───────────────────────────── */
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      aspect-ratio: 3 / 4;
+      background: var(--surface);
+
+      /* staggered entrance */
+      opacity: 0;
+      transform: translateY(24px);
+      animation: cardIn .55s var(--ease) forwards;
+    }
+
+    .card:nth-child(1) { animation-delay: .05s; }
+    .card:nth-child(2) { animation-delay: .15s; }
+    .card:nth-child(3) { animation-delay: .25s; }
+
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* image fills entire card */
+    .card-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      transition: transform .55s ease, filter .55s ease;
+      filter: brightness(.55) saturate(.8);
+    }
+
+    .card:hover .card-img {
+      transform: scale(1.06);
+      filter: brightness(.35) saturate(.6);
+    }
+
+    /* gradient scrim at bottom */
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,.92) 0%,
+        rgba(0,0,0,.4)  45%,
+        transparent     75%
+      );
+      pointer-events: none;
+    }
+
+    /* premium lock badge */
+    .lock-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 3;
+      background: rgba(8,10,13,.8);
+      border: 1px solid var(--border2);
+      border-radius: 99px;
+      padding: 4px 10px 4px 8px;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #ffd166;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      backdrop-filter: blur(6px);
+    }
+
+    .free-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 3;
+      background: rgba(200,255,0,.12);
+      border: 1px solid rgba(200,255,0,.25);
+      border-radius: 99px;
+      padding: 4px 10px;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      backdrop-filter: blur(6px);
+    }
+
+    /* overlay text */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+    }
+
+    .overlay-text h3 {
+      font-family: var(--font-head);
+      font-size: 1.45rem;
+      letter-spacing: .04em;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .overlay-text p {
+      font-size: .78rem;
+      color: rgba(255,255,255,.55);
+      line-height: 1.5;
+      max-width: 200px;
+    }
+
+    /* cta arrow */
+    .card-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity .3s ease, transform .3s ease;
+    }
+
+    .card-cta i { font-size: .7rem; }
+
+    .card:hover .card-cta {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* accent line on hover */
+    .card::before {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s var(--ease);
+      z-index: 4;
+    }
+
+    .card:hover::before { transform: scaleX(1); }
+
+    /* ── Responsive ──────────────────────────────── */
+    @media (max-width: 900px) {
+      .feature-cards { grid-template-columns: 1fr 1fr; }
+      .card:nth-child(3) { grid-column: span 2; aspect-ratio: 16/7; }
+      .card:nth-child(3) .card-img { object-position: center 30%; }
+    }
+
+    @media (max-width: 560px) {
+      header { padding: 18px 20px; }
+      .dashboard-content { padding: 36px 20px 60px; }
+      .feature-cards { grid-template-columns: 1fr; }
+      .card { aspect-ratio: 4/3; }
+      .card:nth-child(3) { grid-column: auto; aspect-ratio: 4/3; }
+    }
+    /* =========================
+   NOTIFICATION WRAPPER
+========================= */
+
+.notif-wrapper {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notif-wrapper i {
+  font-size: 18px;
+  color: var(--text);
+  transition: 0.2s;
+}
+
+.notif-wrapper:hover i {
+  color: var(--accent);
+}
+
+/* badge */
+.notif-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: var(--accent);
+  color: #000;
+  font-size: 11px;
+  font-weight: 800;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(200,255,0,0.4);
+}
+
+/* =========================
+   DROPDOWN PANEL
+========================= */
+
+.notif-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 340px;
+  max-height: 420px;
+  overflow-y: auto;
+
+  background: linear-gradient(145deg, #0f1217, #0b0d11);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+  backdrop-filter: blur(12px);
+
+  padding: 10px;
+  z-index: 999;
+}
+
+/* hidden state */
+.hidden {
+  display: none;
+}
+
+/* =========================
+   HEADER INSIDE DROPDOWN
+========================= */
+
+.notif-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+
+.notif-header h4 {
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+
+.notif-header button {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.notif-header button:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* =========================
+   LIST CONTAINER
+========================= */
+
+.notif-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* =========================
+   NOTIFICATION CARD (UPGRADED)
+========================= */
+
+.notif-item {
+  position: relative;
+  padding: 12px 12px 12px 14px;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.04),
+    rgba(255,255,255,0.02)
+  );
+
+  border: 1px solid rgba(255,255,255,0.06);
+
+  transition: all 0.25s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* hover glow */
+.notif-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-dim);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* unread glow bar */
+.notif-item.unread::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+}
+
+/* AI coach special highlight */
+.notif-item.coach {
+  background: linear-gradient(
+    145deg,
+    rgba(200,255,0,0.08),
+    rgba(255,255,255,0.02)
+  );
+  border: 1px solid rgba(200,255,0,0.2);
+}
+
+/* message */
+.notif-msg {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text);
+  white-space: pre-line;
+}
+
+/* footer row */
+.notif-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* unread dot */
+.notif-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+  </style>
+</head>
+
+<body>
+<div class="dashboard-container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">FitAI</div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="profile.html">Profile</a>
+      <a href="#">Settings</a>
+    </nav>
+    <div class="notif-wrapper" onclick="toggleNotifications()">
+  <i class="fa fa-bell"></i>
+  <span id="notifCount" class="notif-badge">0</span>
+
+  <div id="notifDropdown" class="notif-dropdown hidden"></div>
+</div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="dashboard-content">
+
+    <div class="section-label">Dashboard</div>
+    <h2 class="section-title">My <span>Features</span></h2>
+
+    <div class="feature-cards">
+
+      <!-- CARD 1 — Free -->
+      <div class="card" onclick="uploadPhoto()">
+        <img class="card-img" src="/src/assets/jump.png" alt="Upload Photo" />
+        <span class="free-badge">Free</span>
+        <div class="overlay">
+          <div class="overlay-text">
+            <h3>Upload Progress Photo</h3>
+            <p>Track your body transformation visually over time</p>
+          </div>
+          <div class="card-cta">
+            <span>Get Started</span>
+            <i class="fa fa-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2 — Premium -->
+      <div class="card" onclick="goToWorkout()">
+        <img class="card-img" src="/src/assets/sit.png" alt="AI Plan" />
+        <span class="lock-badge"><i class="fa fa-lock"></i> Premium</span>
+        <div class="overlay">
+          <div class="overlay-text">
+            <h3>Get Personalised Plan</h3>
+            <p>AI-generated workout plan built around your goals</p>
+          </div>
+          <div class="card-cta">
+            <span>Unlock</span>
+            <i class="fa fa-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3 — Premium -->
+      <div class="card" onclick="goToHistory()">
+        <img class="card-img" src="/src/assets/lifting.jpg" alt="Track Progress" />
+        <span class="lock-badge"><i class="fa fa-lock"></i> Premium</span>
+        <div class="overlay">
+          <div class="overlay-text">
+            <h3>Track Progress</h3>
+            <p>Monitor fitness improvements with detailed history</p>
+          </div>
+          <div class="card-cta">
+            <span>Unlock</span>
+            <i class="fa fa-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script type="module">
+
+import { supabase } from "/src/lib/supabaseClient.js";
+
+import { isPremiumUser }
+from "/src/pages/isPremiumUser.js";
+
+import {
+  runAICoach,
+  fetchCoachNotifications,
+  markNotificationRead
+}
+from "/src/components/CoachEngine.js";
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function uploadPhoto() {
+  window.location.href = "monthly-progress.html";
+}
+
+async function goToWorkout() {
+
+  const premium =
+    await isPremiumUser();
+
+  window.location.href =
+    premium
+      ? "workout.html"
+      : "subscribe.html";
+}
+
+async function goToHistory() {
+
+  const premium =
+    await isPremiumUser();
+
+  window.location.href =
+    premium
+      ? "history.html"
+      : "subscribe.html";
+}
+
+/* expose */
+
+window.uploadPhoto = uploadPhoto;
+window.goToWorkout = goToWorkout;
+window.goToHistory = goToHistory;
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+const {
+  data: { user }
+} = await supabase.auth.getUser();
+
+/* =========================================================
+   INIT AI COACH
+========================================================= */
+
+if (user) {
+
+  // generate notification if needed
+  await runAICoach(user.id);
+
+  // load notifications
+  await loadNotifications(user.id);
+}
+
+/* =========================================================
+   LOAD NOTIFICATIONS
+========================================================= */
+
+async function loadNotifications(userId) {
+
+  const notifications =
+    await fetchCoachNotifications(userId);
+
+  const dropdown =
+    document.getElementById("notifDropdown");
+
+  const badge =
+    document.getElementById("notifCount");
+
+  const unreadCount =
+    notifications.filter(n => !n.read).length;
+
+  /* badge */
+
+  badge.innerText = unreadCount;
+
+  badge.style.display =
+    unreadCount > 0
+      ? "flex"
+      : "none";
+
+  /* empty */
+
+  if (!notifications.length) {
+
+    dropdown.innerHTML = `
+      <div class="notif-empty">
+        No notifications yet
+      </div>
+    `;
+
+    return;
+  }
+
+  /* render */
+
+  dropdown.innerHTML =
+    notifications.map(notif => `
+
+      <div
+        class="notif-item ${notif.read ? "read" : "unread"}"
+        onclick="openNotification('${notif.id}')"
+      >
+
+        <div class="notif-msg">
+          ${notif.message}
+        </div>
+
+        <small>
+          ${formatDate(notif.created_at)}
+        </small>
+
+      </div>
+
+    `).join("");
+}
+
+/* =========================================================
+   FORMAT DATE
+========================================================= */
+
+function formatDate(dateString) {
+
+  const date =
+    new Date(dateString);
+
+  return date.toLocaleDateString([], {
+    month: "short",
+    day: "numeric"
+  });
+}
+
+/* =========================================================
+   TOGGLE NOTIFICATIONS
+========================================================= */
+
+window.toggleNotifications = function () {
+
+  document
+    .getElementById("notifDropdown")
+    .classList
+    .toggle("hidden");
+};
+
+/* =========================================================
+   OPEN NOTIFICATION
+========================================================= */
+
+window.openNotification = async function (id) {
+
+  await markNotificationRead(id);
+
+  if (user) {
+    loadNotifications(user.id);
+  }
+};
+
+/* =========================================================
+   CLOSE ON OUTSIDE CLICK
+========================================================= */
+
+document.addEventListener("click", (e) => {
+
+  const wrapper =
+    document.querySelector(".notif-wrapper");
+
+  const dropdown =
+    document.getElementById("notifDropdown");
+
+  if (!wrapper.contains(e.target)) {
+    dropdown.classList.add("hidden");
+  }
+});
+
+</script>
+
+</body>
+</html>

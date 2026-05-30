@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitAI Body Analysis</title>
+
+ <style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'DM Sans', Arial, sans-serif;
+    background: radial-gradient(circle at top, #141821, #0d0f12);
+    color: #fff;
+    padding: 40px 16px;
+  }
+
+  .container {
+    max-width: 460px;
+    margin: auto;
+  }
+
+  h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 700;
+    color: #d4ff3f;
+    letter-spacing: 0.5px;
+  }
+
+  .box {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    padding: 24px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0,0,0,0.4);
+    color: white;
+    outline: none;
+    font-size: 14px;
+    transition: 0.2s;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: #d4ff3f;
+    box-shadow: 0 0 0 2px rgba(212,255,63,0.15);
+  }
+
+  textarea {
+    min-height: 90px;
+    resize: none;
+  }
+
+  canvas {
+    margin-top: 16px;
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  button {
+    margin-top: 16px;
+    padding: 14px;
+    width: 100%;
+    background: linear-gradient(135deg, #d4ff3f, #b7e62f);
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 12px;
+    color: #0d0f12;
+    transition: 0.2s;
+    font-size: 15px;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+  }
+
+  #result {
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(212,255,63,0.08);
+    border: 1px solid rgba(212,255,63,0.2);
+    color: #d4ff3f;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .back-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: 0.2s;
+  }
+
+  .back-btn:hover {
+    border-color: #d4ff3f;
+    color: #d4ff3f;
+  }
+
+  @media (max-width: 480px) {
+    .box {
+      padding: 18px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>Body Analysis Upload</h2>
+
+  <div class="box">
+
+    <input type="file" id="file" accept="image/*" />
+
+    <input type="number" id="weight" placeholder="Enter weight (kg)" />
+
+    <textarea id="notes" placeholder="Write notes (e.g. bulking, cutting, diet...)"></textarea>
+
+    <canvas id="canvas"></canvas>
+
+    <button onclick="analyzeImage()">Analyze + Save</button>
+
+    <div id="result">No analysis yet</div>
+
+  </div>
+
+</div>
+<button class="back-btn" onclick="window.location.href='monthly-progress.html'">
+  ← Monthly Body Analysis
+</button>
+<!-- MediaPipe -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+
+<script type="module" src="./src/components/ProgressPhotoUpload.js"></script>
+
+</body>
+</html>

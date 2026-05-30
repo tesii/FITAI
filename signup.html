@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Enlightened Gym</title>
+  <link rel="stylesheet" href="signup.css">
+</head>
+
+<body>
+
+  <div class="signup-container">
+
+    <div class="signup-left">
+      <h1>Sign Up</h1>
+
+      <form id="signupForm">
+
+        <!-- Full Name -->
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          placeholder="Full Name" 
+          required
+        >
+
+        <!-- Email -->
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          placeholder="Email" 
+          required
+        >
+
+        <!-- Role -->
+        <select id="role" name="role" required>
+          <option value="user" selected>User</option>
+          <option value="coach">Coach</option>
+        </select>
+
+        <!-- Password -->
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          placeholder="Password" 
+          required
+        >
+
+        <!-- Confirm Password -->
+        <input 
+          type="password" 
+          id="confirm_password" 
+          name="confirm_password" 
+          placeholder="Confirm Password" 
+          required
+        >
+
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <p class="login-link">
+        Already have an account? 
+        <a href="login.html">Login</a>
+      </p>
+
+      <p id="message"></p>
+    </div>
+
+    <div class="signup-right"></div>
+
+  </div>
+
+  <!-- IMPORTANT: keep module path correct -->
+  <script type="module" src="/src/pages/signup.js"></script>
+
+</body>
+</html>
