@@ -1,6 +1,6 @@
 const supabase = window.supabase.createClient(
-  "supabaseUrl",
-  "supabaseAnonKey"
+  "https://ojzeaqememaevlxcyabn.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9qemVhcWVtZW1hZXZseGN5YWJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3NTQxODIsImV4cCI6MjA4OTMzMDE4Mn0.4Dg17eTLAK0AlHXmrCCvxEIa2RngJIu0kr1v5rX439Y"
 );
 const form = document.getElementById('signupForm');
 const message = document.getElementById('message');
