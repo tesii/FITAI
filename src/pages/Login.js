@@ -82,9 +82,9 @@ form.addEventListener('submit', async (e) => {
 
     setTimeout(() => {
       if (profile.role === 'coach') {
-        window.location.href = '/coach_dashboard.html';
+        window.location.href = 'coach_dashboard.html';
       } else {
-        window.location.href = '/user_dashboard.html';
+        window.location.href = 'user_dashboard.html';
       }
     }, 800);
 
