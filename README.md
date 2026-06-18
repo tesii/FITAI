@@ -15,26 +15,39 @@ The system uses **frontend web technologies + Supabase backend services** to man
 ## 📌 Features
 
 ### 👤 Authentication System
+
   User signup and login system
+  
   Secure authentication using Supabase
+  
   Role based access (User / Coach)
 
 ### 📊 Fitness Tracking
+
   Upload and analyze fitness progress images
+  
   Track body transformation over time
+  
   View performance trends
 
 ### 🤖 AI Based Insights
+
   Personalized workout recommendations
+  
   Progress classification (Improving / Stable / Declining)
+  
   Smart feedback based on user activity
 
 ### 📈 Dashboard Analytics
+
   User performance overview
+  
   Progress visualization
+  
   Activity insights
 
 ### 💳 Payment Integration (optional module)
+
   Fitness plan payments via API integration
 
    
@@ -42,19 +55,27 @@ The system uses **frontend web technologies + Supabase backend services** to man
 ## 🛠️ Tech Stack
 
 ### Frontend
+
   HTML5
+  
   CSS3
+  
   JavaScript (Vanilla)
 
 ### Backend / BaaS
+
   Supabase (Auth + Database)
 
 ### AI / Processing
+
   MediaPipe (Computer Vision)
+  
   Custom recommendation logic
 
 ### Tools
+
   Git & GitHub
+  
   GitHub Pages (Deployment)
 
    
